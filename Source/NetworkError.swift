@@ -7,16 +7,8 @@
 //
 
 import Foundation
-//
-//  NetworkError.swift
-//
-//  Created by ulian_onua on 11/16/17.
-//  Copyright © 2017 julian. All rights reserved.
-//
 
-import Foundation
-
-struct NetworkError {
+public struct NetworkError {
     var statusCode : Int?
     var originalErrorMessage = ""
     var rawData : Data?

@@ -1,6 +1,6 @@
 import Foundation
 
-enum HttpMethod : String {
+public enum HttpMethod : String {
     case options = "OPTIONS"
     case get     = "GET"
     case head    = "HEAD"
@@ -12,7 +12,7 @@ enum HttpMethod : String {
     case connect = "CONNECT"
 }
 
-enum KRNReqErrorString : String {
+public enum KRNReqErrorString : String {
     case invalidUrl = "Invalid URL"
     case errorJsonEncoding = "Error json encoding"
     case errorResponseFormat = "Response is not HTTP response"
@@ -20,21 +20,21 @@ enum KRNReqErrorString : String {
     case errorParsingAsString = "Error response format. Not String."
 }
 
-enum KRNParseResponseFormat  {
+public enum KRNParseResponseFormat  {
     case none // not parse
     case json // parse as json
     case string // parse as string
     case decoder //parse with json decoder
 }
 
-protocol RequestManagerDelegate : class {
+public protocol RequestManagerDelegate : class {
     func requestStarted(requestManager : KRNRequestManager, url : String)
     func requestFinished(requestManager : KRNRequestManager, url : String)
 }
 
 typealias ResponseCompletion = (Any?, NetworkError?) -> Void
 
-class KRNRequestManager {
+open class KRNRequestManager {
     let urlSession : URLSession
     fileprivate (set) var baseUrl : String
     
