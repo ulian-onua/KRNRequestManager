@@ -13,18 +13,18 @@ public struct NetworkError {
     var originalErrorMessage = ""
     var rawData : Data?
     
-    init(statusCode : Int? = nil, originalErrorMessage : String, rawData : Data? = nil) {
+    public init(statusCode : Int? = nil, originalErrorMessage : String, rawData : Data? = nil) {
         self.statusCode = statusCode
         self.originalErrorMessage = originalErrorMessage
         self.rawData = rawData
     }
     
-    init (statusCode : Int, rawData : Data?) {
+    public init (statusCode : Int, rawData : Data?) {
         self.statusCode = statusCode
         self.rawData = rawData
     }
 
-    var jsonDictErrorData : [String : Any]? {
+    public var jsonDictErrorData : [String : Any]? {
         guard let rawData = self.rawData else {return nil}
         do {
             let dict = try JSONSerialization.jsonObject(with: rawData, options: .allowFragments) as? [String:Any]
@@ -34,12 +34,12 @@ public struct NetworkError {
         }
     }
     
-    var stringErrorData : String? {
+    public var stringErrorData : String? {
         guard let rawData = self.rawData else {return nil}
         return String(data: rawData, encoding: .utf8)
     }
     
-    var valuableErrorData : String {
+    public var valuableErrorData : String {
         if originalErrorMessage.count > 0 {
             return originalErrorMessage
         } else {

@@ -39,7 +39,7 @@ open class KRNRequestManager {
     fileprivate (set) var baseUrl : String
     
     //MARK: Init
-    init(url : String) {
+    public init(url : String) {
         urlSession = URLSession.init(configuration: URLSessionConfiguration.default)
         self.baseUrl = url
     }
@@ -49,7 +49,7 @@ open class KRNRequestManager {
     }
     
     //MARK: Requests
-    func requestJSON(method : HttpMethod, shortURL : String, params : [String : Any]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion : @escaping ResponseCompletion) -> Void  {
+    public func requestJSON(method : HttpMethod, shortURL : String, params : [String : Any]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion : @escaping ResponseCompletion) -> Void  {
         
         guard let url = URL(string: baseUrl + shortURL) else {
             completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
@@ -75,7 +75,7 @@ open class KRNRequestManager {
         performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
-    func requestMultiEncoded(method : HttpMethod, shortURL : String, urlParams : [String : String]?, params : [String : Any]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion : @escaping ResponseCompletion) -> Void {
+    public func requestMultiEncoded(method : HttpMethod, shortURL : String, urlParams : [String : String]?, params : [String : Any]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion : @escaping ResponseCompletion) -> Void {
         guard let url = generateUrl(from:  baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
             return
@@ -100,7 +100,7 @@ open class KRNRequestManager {
         
     }
     
-    func requestURLQuery(method : HttpMethod, shortURL : String, urlParams : [String : String]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion :  @escaping ResponseCompletion) {
+    public func requestURLQuery(method : HttpMethod, shortURL : String, urlParams : [String : String]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .none, completion :  @escaping ResponseCompletion) {
         
         guard let url = generateUrl(from:  baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
@@ -191,7 +191,7 @@ open class KRNRequestManager {
 
 //MARK: Raw response parsing
 extension KRNRequestManager  {
-    func parseAsJson(response : Data) -> Any? {
+    fileprivate func parseAsJson(response : Data) -> Any? {
         do {
             let parsed = try JSONSerialization.jsonObject(with: response, options: .allowFragments)
             return parsed
@@ -200,14 +200,14 @@ extension KRNRequestManager  {
         }
     }
     
-    func parseAsString(response : Data) -> String? {
+    fileprivate func parseAsString(response : Data) -> String? {
         return String.init(data: response, encoding: .utf8)
     }
 }
 
 //MARK: Multipart data
-extension KRNRequestManager {
-    func requestMultiPartData(method : HttpMethod, shortURL : String, urlParams : [String : String]? = nil, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .json, formDataname : String, formDataFileName : String, mimeType : String, file : Data, completion :  @escaping ResponseCompletion) {
+public extension KRNRequestManager {
+    public func requestMultiPartData(method : HttpMethod, shortURL : String, urlParams : [String : String]? = nil, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .json, formDataname : String, formDataFileName : String, mimeType : String, file : Data, completion :  @escaping ResponseCompletion) {
         guard let url = generateUrl(from:  baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
             return
@@ -251,7 +251,7 @@ extension KRNRequestManager {
     }
 }
 
-extension Data {
+fileprivate extension Data {
     mutating func append(_ string: String) {
         if let data = string.data(using: .utf8) {
             append(data)
