@@ -9,9 +9,9 @@
 import Foundation
 
 public struct NetworkError {
-    var statusCode : Int?
-    var originalErrorMessage = ""
-    var rawData : Data?
+    public let statusCode : Int?
+    public var originalErrorMessage = ""
+    public let rawData : Data?
     
     public init(statusCode : Int? = nil, originalErrorMessage : String, rawData : Data? = nil) {
         self.statusCode = statusCode
@@ -19,7 +19,7 @@ public struct NetworkError {
         self.rawData = rawData
     }
     
-    public init (statusCode : Int, rawData : Data?) {
+    public init(statusCode : Int, rawData : Data?) {
         self.statusCode = statusCode
         self.rawData = rawData
     }
