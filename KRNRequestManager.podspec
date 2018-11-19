@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "KRNRequestManager"
-  s.version      = "0.0.5"
+  s.version      = "0.0.6"
   s.summary      = "KRNRequestManager is a wrapper of NSURLSession to simplify REST requests"
 
   s.homepage     = "https://github.com/ulian-onua/KRNRequestManager"
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "8.0"
 
-  s.source       = { :git => "https://github.com/ulian-onua/KRNRequestManager.git", :tag => "0.0.5" }
+  s.source       = { :git => "https://github.com/ulian-onua/KRNRequestManager.git", :tag => "0.0.6" }
 
 
   s.source_files  = "Source/*.{swift}"

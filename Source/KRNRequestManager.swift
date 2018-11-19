@@ -41,7 +41,7 @@ open class KRNRequestManager {
 
     fileprivate (set) var baseUrl : String
     
-    //MARK: Init
+    // MARK: - Init
     public init(url : String) {
         urlSession = URLSession.init(configuration: URLSessionConfiguration.default)
         self.baseUrl = url
@@ -51,7 +51,7 @@ open class KRNRequestManager {
         self.baseUrl = url
     }
     
-    //MARK: Requests
+    // MARK: - Requests
     open func requestJSON(method : HttpMethod, shortURL : String, params : [String : Any]?, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .json, completion : @escaping ResponseCompletion) -> Void  {
        
         guard let url = URL(string: baseUrl + shortURL) else {
@@ -114,7 +114,25 @@ open class KRNRequestManager {
         performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
-    //MARK: Private methods
+    open func requestFormURLEncoded(method: HttpMethod, shortURL: String, urlParams: [String : String]?, formUrlEncodedParams: [String: String], headerParams: [String: String]?, parseFormat: KRNParseResponseFormat = .json, completion:  @escaping ResponseCompletion) {
+        
+        guard let url = generateUrl(from:  baseUrl + shortURL, urlParams: urlParams) else {
+            completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
+            return
+        }
+        
+        var urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
+        
+        let bodyString = formUrlEncodedParams.queryParameters
+        urlRequest.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
+
+        
+        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+    }
+    
+    
+    // MARK: - Private methods
+    
     fileprivate func generateUrlRequest(from url : URL, method : HttpMethod, headerParams : [String : String]?) -> URLRequest {
         var urlRequest = URLRequest(url: url) // 1. set url
         urlRequest.httpMethod = method.rawValue // 2. set method
@@ -157,8 +175,8 @@ open class KRNRequestManager {
             }.resume()
     }
     
-    fileprivate func generateUrl(from urlBody : String, urlParams : [String : String]?) -> URL? {
-        guard var components = URLComponents.init(string: urlBody) else {
+    fileprivate func generateUrl(from urlBody: String, urlParams : [String : String]?) -> URL? {
+        guard var components = URLComponents(string: urlBody) else {
             return nil
         }
         
@@ -172,9 +190,36 @@ open class KRNRequestManager {
         return components.url
     }
     
+    
+    
 }
 
-//MARK: Multipart data
+protocol URLQueryParameterStringConvertible {
+    var queryParameters: String {get}
+}
+
+extension Dictionary : URLQueryParameterStringConvertible {
+    /**
+     This computed property returns a query parameters string from the given NSDictionary. For
+     example, if the input is @{@"day":@"Tuesday", @"month":@"January"}, the output
+     string will be @"day=Tuesday&month=January".
+     @return The computed parameters string.
+     */
+    var queryParameters: String {
+        var parts: [String] = []
+        for (key, value) in self {
+            let part = String(format: "%@=%@",
+                              String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
+                              String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+            parts.append(part as String)
+        }
+        return parts.joined(separator: "&")
+    }
+    
+}
+
+
+// MARK: - Multipart data
 extension KRNRequestManager {
     open func requestMultiPartData(method : HttpMethod, shortURL : String, urlParams : [String : String]? = nil, headerParams : [String : String]?, parseFormat : KRNParseResponseFormat = .json, formDataname : String, formDataFileName : String, mimeType : String, file : Data, completion :  @escaping ResponseCompletion) {
         guard let url = generateUrl(from:  baseUrl + shortURL, urlParams: urlParams) else {
