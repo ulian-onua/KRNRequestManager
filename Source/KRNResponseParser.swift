@@ -16,9 +16,10 @@ public enum KRNParseResponseFormat  {
 }
 
 open class KRNResponseParser {
-    open func parseAsJson(response : Data) -> Any? {
+    open func parseAsJson(response: Data) -> Any? {
         do {
-            let parsed = try JSONSerialization.jsonObject(with: response, options: .allowFragments)
+            let parsed = try JSONSerialization.jsonObject(with: response,
+                                                          options: .allowFragments)
             return parsed
         } catch _ as NSError {
             return nil //error parsing
@@ -26,20 +27,25 @@ open class KRNResponseParser {
     }
     
     open func parseAsString(response : Data) -> String? {
-        return String.init(data: response, encoding: .utf8)
+        return String(data: response, encoding: .utf8)
     }
     
-    open func parseDataResponse(response : Data, parseResponseFormat : KRNParseResponseFormat, completion: @escaping ResponseCompletion) {
+    open func parseDataResponse(response: Data,
+                                parseResponseFormat: KRNParseResponseFormat,
+                                completion: @escaping ResponseCompletion) {
+        
         switch parseResponseFormat {
         case .json:
             guard let jsonObject = parseAsJson(response: response) else {
-                completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.errorParsingAsJson.rawValue, rawData: response))
+                completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorParsingAsJson.rawValue,
+                                             rawData: response))
                 return
             }
             completion(jsonObject, nil)
         case .string:
             guard let stringObject = parseAsString(response: response) else {
-                completion(nil, NetworkError.init(originalErrorMessage: KRNReqErrorString.errorParsingAsString.rawValue, rawData: response))
+                completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorParsingAsString.rawValue,
+                                             rawData: response))
                 return
             }
             completion(stringObject, nil)
