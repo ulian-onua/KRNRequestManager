@@ -32,14 +32,30 @@ public typealias ResponseCompletion = (Any?, NetworkError?) -> Void
 open class KRNRequestManager {
     public let urlSession: URLSession
     public let responseParser = KRNResponseParser()
-
     private (set) var baseUrl: String
+    
+    public var isDebug: Bool {
+        set {
+            (isDebugRequests, isDebugResponses) = (true, true)
+        }
+        get {
+            return isDebugRequests && isDebugResponses
+        }
+    }
+    
+    public var isDebugRequests = false
+    
+    public var isDebugResponses = false // will be supported in next versions
     
     // MARK: - Initializers
     
-    public init(url: String) {
-        urlSession = URLSession(configuration: .default)
+    public init(url: String, configuration: URLSessionConfiguration) {
+        urlSession = URLSession(configuration: configuration)
         self.baseUrl = url
+    }
+    
+    public convenience init(url: String) {
+        self.init(url: url, configuration: .default)
     }
     
     private func setBaseUrl(_ url: String) {
@@ -50,7 +66,7 @@ open class KRNRequestManager {
     
     open func requestJSON(method: HttpMethod,
                           shortURL: String,
-                          params: [String: Any]?,
+                          params: JSONConvertible?,
                           headerParams: [String: String]?,
                           parseFormat: KRNParseResponseFormat = .none,
                           completion: @escaping ResponseCompletion) {
@@ -60,18 +76,33 @@ open class KRNRequestManager {
             return
         }
         
+        if isDebugRequests {
+            print("Request JSON -> \(baseUrl + shortURL)")
+        }
+        
         var jsonHeaderParams: [String: String] = headerParams ?? [String: String]()
         jsonHeaderParams["Content-Type"] = "application/json"
+        
+        if isDebugRequests {
+            print("Headers->\n\(jsonHeaderParams as NSDictionary)")
+        }
         
         var urlRequest = generateUrlRequest(from: url, method: method, headerParams: jsonHeaderParams)
         
         // set params
         if let params = params {
             do {
-                let data = try JSONSerialization.data(withJSONObject: params, options: .init(rawValue: 0))
+                let data = try params.toJSONData()
+                
+                if isDebugRequests {
+                    print("JSON params ->")
+                    print(params.debugOutput())
+                }
+                
                 urlRequest.httpBody = data
             } catch _ as NSError {
                 completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorJsonEncoding.rawValue))
+                return
             }
         }
         
@@ -90,6 +121,16 @@ open class KRNRequestManager {
             return
         }
         
+        if isDebugRequests {
+            print("Request URL Query -> \(baseUrl + shortURL)")
+            if let headerParams = headerParams {
+                print("Headers->\n\(headerParams as NSDictionary)")
+            }
+            if let urlParams = urlParams {
+                print("URL Query params->\n\(urlParams as NSDictionary)")
+            }
+        }
+        
         let urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
         
         performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
@@ -98,7 +139,7 @@ open class KRNRequestManager {
     open func requestMultiEncoded(method: HttpMethod,
                                   shortURL: String,
                                   urlParams: [String: String]?,
-                                  params: [String: Any]?,
+                                  params: JSONConvertible?,
                                   headerParams: [String: String]?,
                                   parseFormat: KRNParseResponseFormat = .none,
                                   completion: @escaping ResponseCompletion) -> Void {
@@ -116,10 +157,11 @@ open class KRNRequestManager {
         // set params
         if let params = params {
             do {
-                let data = try JSONSerialization.data(withJSONObject: params, options: .init(rawValue: 0))
+                let data = try params.toJSONData()
                 urlRequest.httpBody = data
             } catch _ as NSError {
                 completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorJsonEncoding.rawValue))
+                return
             }
         }
 

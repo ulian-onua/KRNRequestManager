@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NetworkError {
+public class NetworkError: Error {
     
     // MARK: - Stored properties
     
@@ -16,6 +16,7 @@ public struct NetworkError {
     public let originalErrorMessage: String
     public let rawData: Data?
     
+ 
     // MARK: - Initializers
     
     public init(statusCode: Int? = nil, originalErrorMessage: String, rawData: Data? = nil) {
@@ -28,6 +29,12 @@ public struct NetworkError {
         self.statusCode = statusCode
         self.originalErrorMessage = ""
         self.rawData = rawData
+    }
+    
+    // MARK: - Localized description support
+    
+    public var localizedDescription: String {
+        return NSLocalizedString(valuableErrorData, bundle: .main, comment: "")
     }
 
     // MARK: - Different data type computed properties

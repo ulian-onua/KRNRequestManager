@@ -15,6 +15,7 @@
 		B9060C7B2104C4F000C20BC7 /* KRNRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C792104C4F000C20BC7 /* KRNRequestManager.swift */; };
 		B9060C7C2104C4F000C20BC7 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C7A2104C4F000C20BC7 /* NetworkError.swift */; };
 		B9060C7E2104C61600C20BC7 /* KRNResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C7D2104C61600C20BC7 /* KRNResponseParser.swift */; };
+		B97AB8F22246B1F500E0887D /* JSONConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97AB8F12246B1F500E0887D /* JSONConvertible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		B9060C792104C4F000C20BC7 /* KRNRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KRNRequestManager.swift; path = ../../Source/KRNRequestManager.swift; sourceTree = "<group>"; };
 		B9060C7A2104C4F000C20BC7 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkError.swift; path = ../../Source/NetworkError.swift; sourceTree = "<group>"; };
 		B9060C7D2104C61600C20BC7 /* KRNResponseParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KRNResponseParser.swift; path = ../../Source/KRNResponseParser.swift; sourceTree = "<group>"; };
+		B97AB8F12246B1F500E0887D /* JSONConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONConvertible.swift; path = ../../Source/JSONConvertible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				B9060C792104C4F000C20BC7 /* KRNRequestManager.swift */,
 				B9060C7A2104C4F000C20BC7 /* NetworkError.swift */,
 				B9060C7D2104C61600C20BC7 /* KRNResponseParser.swift */,
+				B97AB8F12246B1F500E0887D /* JSONConvertible.swift */,
 			);
 			name = KRNRequestManager;
 			sourceTree = "<group>";
@@ -113,6 +116,7 @@
 				TargetAttributes = {
 					B9060C632104C4B800C20BC7 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -153,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9060C7B2104C4F000C20BC7 /* KRNRequestManager.swift in Sources */,
+				B97AB8F22246B1F500E0887D /* JSONConvertible.swift in Sources */,
 				B9060C7C2104C4F000C20BC7 /* NetworkError.swift in Sources */,
 				B9060C6A2104C4B800C20BC7 /* ViewController.swift in Sources */,
 				B9060C7E2104C61600C20BC7 /* KRNResponseParser.swift in Sources */,
@@ -309,7 +314,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.julianDrapaylo.KRNRequestManagerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -327,7 +332,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.julianDrapaylo.KRNRequestManagerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
