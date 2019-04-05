@@ -24,7 +24,7 @@ public enum KRNReqErrorString: String {
     case errorJsonEncoding = "Error json encoding"
     case errorResponseFormat = "Response is not HTTP response"
     case errorParsingAsJson = "Error response format. Not JSON."
-    case errorParsingAsString = "Error response format. Not String."
+    case errorParsingAsString = "Error response format. Not string."
 }
 
 public typealias ResponseCompletion = (Any?, NetworkError?) -> Void
@@ -64,16 +64,16 @@ open class KRNRequestManager {
     
     // MARK: - Requests
     
-    open func requestJSON(method: HttpMethod,
-                          shortURL: String,
-                          params: JSONConvertible?,
-                          headerParams: [String: String]?,
-                          parseFormat: KRNParseResponseFormat = .none,
-                          completion: @escaping ResponseCompletion) {
+    @discardableResult open func requestJSON(method: HttpMethod,
+                                             shortURL: String,
+                                             params: JSONConvertible?,
+                                             headerParams: [String: String]?,
+                                             parseFormat: KRNParseResponseFormat = .none,
+                                             completion: @escaping ResponseCompletion) -> URLSessionTask? {
        
         guard let url = URL(string: baseUrl + shortURL) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return
+            return nil
         }
         
         if isDebugRequests {
@@ -102,23 +102,23 @@ open class KRNRequestManager {
                 urlRequest.httpBody = data
             } catch _ as NSError {
                 completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorJsonEncoding.rawValue))
-                return
+                return nil
             }
         }
         
-        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
-    open func requestURLQuery(method: HttpMethod,
-                              shortURL: String,
-                              urlParams: [String: String]?,
-                              headerParams: [String: String]?,
-                              parseFormat: KRNParseResponseFormat = .none,
-                              completion: @escaping ResponseCompletion) {
+     @discardableResult open func requestURLQuery(method: HttpMethod,
+                                                  shortURL: String,
+                                                  urlParams: [String: String]?,
+                                                  headerParams: [String: String]?,
+                                                  parseFormat: KRNParseResponseFormat = .none,
+                                                  completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return
+            return nil
         }
         
         if isDebugRequests {
@@ -133,20 +133,20 @@ open class KRNRequestManager {
         
         let urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
         
-        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
-    open func requestMultiEncoded(method: HttpMethod,
-                                  shortURL: String,
-                                  urlParams: [String: String]?,
-                                  params: JSONConvertible?,
-                                  headerParams: [String: String]?,
-                                  parseFormat: KRNParseResponseFormat = .none,
-                                  completion: @escaping ResponseCompletion) -> Void {
+    @discardableResult open func requestMultiEncoded(method: HttpMethod,
+                                                     shortURL: String,
+                                                     urlParams: [String: String]?,
+                                                     params: JSONConvertible?,
+                                                     headerParams: [String: String]?,
+                                                     parseFormat: KRNParseResponseFormat = .none,
+                                                     completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return
+            return nil
         }
         
         var jsonHeaderParams: [String: String] = headerParams ?? [String: String]()
@@ -161,24 +161,24 @@ open class KRNRequestManager {
                 urlRequest.httpBody = data
             } catch _ as NSError {
                 completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorJsonEncoding.rawValue))
-                return
+                return nil
             }
         }
 
-        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
-    open func requestFormURLEncoded(method: HttpMethod,
-                                    shortURL: String,
-                                    urlParams: [String: String]?,
-                                    formUrlEncodedParams: [String: String],
-                                    headerParams: [String: String]?,
-                                    parseFormat: KRNParseResponseFormat = .none,
-                                    completion:  @escaping ResponseCompletion) {
+    @discardableResult open func requestFormURLEncoded(method: HttpMethod,
+                                                      shortURL: String,
+                                                      urlParams: [String: String]?,
+                                                      formUrlEncodedParams: [String: String],
+                                                      headerParams: [String: String]?,
+                                                      parseFormat: KRNParseResponseFormat = .none,
+                                                      completion:  @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return
+            return nil
         }
         
         var urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
@@ -186,7 +186,7 @@ open class KRNRequestManager {
         let bodyString = formUrlEncodedParams.queryParameters
         urlRequest.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
 
-        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
     // MARK: - Helpers
@@ -226,11 +226,12 @@ open class KRNRequestManager {
     
     // MARK: - Private
     
-    private func performDataTask(urlRequest: URLRequest,
-                                 parseResponseFormat: KRNParseResponseFormat,
-                                 completion: @escaping ResponseCompletion) {
+    @discardableResult private func performDataTask(urlRequest: URLRequest,
+                                                    parseResponseFormat: KRNParseResponseFormat,
+                                                    completion: @escaping ResponseCompletion) -> URLSessionTask {
         
-        urlSession.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let task =
+            urlSession.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let `self` = self else {return}
             if let error = error {
                 completion(nil, NetworkError(originalErrorMessage: error.localizedDescription))
@@ -257,27 +258,29 @@ open class KRNRequestManager {
                 completion(data, NetworkError(statusCode: response.statusCode, rawData: data))
             }
             
-            }.resume()
+            }
+        task.resume()
+        return task
     }
 }
 
 // MARK: - Multipart data
 
 extension KRNRequestManager {
-    open func requestMultiPartData(method: HttpMethod,
-                                   shortURL: String,
-                                   urlParams: [String: String]? = nil,
-                                   headerParams: [String: String]?,
-                                   parseFormat: KRNParseResponseFormat = .none,
-                                   formDataname: String,
-                                   formDataFileName: String,
-                                   mimeType: String,
-                                   file: Data,
-                                   completion: @escaping ResponseCompletion) {
+    @discardableResult open func requestMultiPartData(method: HttpMethod,
+                                                      shortURL: String,
+                                                      urlParams: [String: String]? = nil,
+                                                      headerParams: [String: String]?,
+                                                      parseFormat: KRNParseResponseFormat = .none,
+                                                      formDataname: String,
+                                                      formDataFileName: String,
+                                                      mimeType: String,
+                                                      file: Data,
+                                                      completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return
+            return nil
         }
         
         var urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
@@ -291,7 +294,7 @@ extension KRNRequestManager {
                                          file: file,
                                          boundary: boundary)
         
-        performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
+        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
     
     private func createBody(with parameters: [String: String]?,

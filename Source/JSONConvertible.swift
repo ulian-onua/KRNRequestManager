@@ -38,11 +38,11 @@ extension Array: JSONConvertible {
 }
 
 public extension Encodable where Self: JSONConvertible {
-    public func toJSONData() throws -> Data {
+    func toJSONData() throws -> Data {
         return try JSONEncoder().encode(self)
     }
     
-    public func debugOutput() {
+    func debugOutput() {
         do {
             let data = try self.toJSONData()
             switch try JSONSerialization.jsonObject(with: data, options: .init(rawValue: 0)) {
