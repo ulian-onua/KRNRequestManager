@@ -15,6 +15,10 @@ public enum KRNParseResponseFormat  {
 }
 
 open class KRNResponseParser {
+    public init() {
+        
+    }
+    
     open func parseAsJson(response: Data) -> Any? {
         do {
             let parsed = try JSONSerialization.jsonObject(with: response,
@@ -58,7 +62,7 @@ open class KRNResponseParser {
     open func parseWithJSONDecoder<T: Decodable>(response: Any,
                                                  decodableType: T.Type,
                                                  isDebug: Bool = false) -> (T?, NetworkError?) {
-        
+
         guard let response = response as? Data else {
             return (nil, NetworkError(originalErrorMessage: "Invalid network response"))
         }
