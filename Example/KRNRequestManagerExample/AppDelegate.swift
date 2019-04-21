@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  KRNRequestManagerExample
 //
-//  Created by Julian Ivanov on 22/07/2018.
+//  Created by Julian Drapaylo on 22/07/2018.
 //  Copyright © 2018 Julian Drapaylo. All rights reserved.
 //
 

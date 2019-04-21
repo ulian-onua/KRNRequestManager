@@ -2,8 +2,8 @@
 //  KRNResponseParser.swift
 //  KRNRequestManagerExample
 //
-//  Created by Julian Ivanov on 22/07/2018.
-//  Copyright © 2018 Julian Drapaylo. All rights reserved.
+//  Created by Julian Drapaylo on 22/07/2018.
+//  Copyright © 2019 Julian Drapaylo. All rights reserved.
 //
 
 import Foundation
@@ -12,7 +12,6 @@ public enum KRNParseResponseFormat  {
     case none // not parse
     case json // parse as json
     case string // parse as string
-    case decoder // parse with json decoder
 }
 
 open class KRNResponseParser {
@@ -53,4 +52,44 @@ open class KRNResponseParser {
             completion (response, nil)
         }
     }
+    
+    
+    // parse with Swift 4/5 JSON decoder (with debug functionality)
+    open func parseWithJSONDecoder<T: Decodable>(response: Any,
+                                                 decodableType: T.Type,
+                                                 isDebug: Bool = false) -> (T?, NetworkError?) {
+        
+        guard let response = response as? Data else {
+            return (nil, NetworkError(originalErrorMessage: "Invalid network response"))
+        }
+        let decoder = JSONDecoder()
+        
+        do {
+            if isDebug {
+                let dict = try JSONSerialization.jsonObject(with: response, options: .allowFragments)
+                if let diction = dict as? [String: Any] {
+                    print(diction as NSDictionary)
+                } else if let array = dict as? [[String: Any]] {
+                    print(array as NSArray)
+                }
+            }
+
+            let result = try decoder.decode(decodableType, from: response)
+            return (result, nil)
+        } catch let error as NSError {
+            if isDebug {
+                print(error.localizedDescription)
+                if let decodingError = error as? DecodingError {
+                    switch decodingError {
+                    case .typeMismatch(let mismType, let context):
+                        print("Type mismatch error = \(mismType). Context = \(context)")
+                    default:
+                        print("\(decodingError)")
+                    }
+                }
+            }
+            return (nil, NetworkError(originalErrorMessage: "Error decoding network response"))
+        }
+    }
+
 }

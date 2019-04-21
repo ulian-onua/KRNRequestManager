@@ -2,8 +2,8 @@
 //  NetworkError.swift
 //  decidediet
 //
-//  Created by ulian_onua on 1/14/18.
-//  Copyright © 2018 julian. All rights reserved.
+//  Created by Julian Drapaylo on 1/14/18.
+//  Copyright © 2019 Julian Drapaylo . All rights reserved.
 //
 
 import Foundation

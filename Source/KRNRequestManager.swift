@@ -2,7 +2,7 @@
 //  KRNRequestManager.swift
 //
 //  Created by Julian Drapaylo
-//  Copyright © 2018 Julian Drapaylo. All rights reserved.
+//  Copyright © 2019 Julian Drapaylo. All rights reserved.
 //
 
 import Foundation
@@ -171,10 +171,10 @@ open class KRNRequestManager {
     @discardableResult open func requestFormURLEncoded(method: HttpMethod,
                                                       shortURL: String,
                                                       urlParams: [String: String]?,
-                                                      formUrlEncodedParams: [String: String],
+                                                      formUrlEncodedParams: [String: String]?,
                                                       headerParams: [String: String]?,
                                                       parseFormat: KRNParseResponseFormat = .none,
-                                                      completion:  @escaping ResponseCompletion) -> URLSessionTask? {
+                                                      completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
             completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
@@ -183,11 +183,60 @@ open class KRNRequestManager {
         
         var urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
         
-        let bodyString = formUrlEncodedParams.queryParameters
-        urlRequest.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
+        if let formUrlEncodedParams = formUrlEncodedParams {
+            let bodyString = formUrlEncodedParams.queryParameters
+            urlRequest.httpBody = bodyString.data(using: .utf8, allowLossyConversion: true)
+        }
 
         return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
     }
+    
+    @discardableResult open func request(encodingType: EncodingType,
+                                         method: HttpMethod,
+                                         shortURL: String,
+                                         headerParams: [String: String]? = nil,
+                                         urlParams: [String: String]? = nil,
+                                         jsonParams: JSONConvertible? = nil,
+                                         formUrlEncodedParams: [String: String]? = nil,
+                                         parseFormat: KRNParseResponseFormat = .none,
+                                         completion: @escaping ResponseCompletion) -> URLSessionTask? {
+        
+        switch encodingType {
+        case .url:
+            return requestURLQuery(method: method,
+                                   shortURL: shortURL,
+                                   urlParams: urlParams,
+                                   headerParams: headerParams,
+                                   parseFormat: parseFormat,
+                                   completion: completion)
+        case .json:
+            return requestJSON(method: method,
+                               shortURL: shortURL,
+                               params: jsonParams,
+                               headerParams: headerParams,
+                               parseFormat: parseFormat,
+                               completion: completion)
+        case .urlJsonMultiEncoded:
+            return requestMultiEncoded(method: method,
+                                       shortURL: shortURL,
+                                       urlParams: urlParams,
+                                       params: jsonParams,
+                                       headerParams: headerParams,
+                                       parseFormat: parseFormat,
+                                       completion: completion)
+        case .formUrl:
+            return requestFormURLEncoded(method: method,
+                                         shortURL: shortURL,
+                                         urlParams: urlParams,
+                                         formUrlEncodedParams: formUrlEncodedParams,
+                                         headerParams: headerParams,
+                                         parseFormat: parseFormat,
+                                         completion: completion)
+        }
+        
+    }
+    
+    
     
     // MARK: - Helpers
     
@@ -226,9 +275,9 @@ open class KRNRequestManager {
     
     // MARK: - Private
     
-    @discardableResult private func performDataTask(urlRequest: URLRequest,
-                                                    parseResponseFormat: KRNParseResponseFormat,
-                                                    completion: @escaping ResponseCompletion) -> URLSessionTask {
+    @discardableResult func performDataTask(urlRequest: URLRequest,
+                                            parseResponseFormat: KRNParseResponseFormat,
+                                            completion: @escaping ResponseCompletion) -> URLSessionTask {
         
         let task =
             urlSession.dataTask(with: urlRequest) { [weak self] (data, response, error) in
@@ -261,92 +310,5 @@ open class KRNRequestManager {
             }
         task.resume()
         return task
-    }
-}
-
-// MARK: - Multipart data
-
-extension KRNRequestManager {
-    @discardableResult open func requestMultiPartData(method: HttpMethod,
-                                                      shortURL: String,
-                                                      urlParams: [String: String]? = nil,
-                                                      headerParams: [String: String]?,
-                                                      parseFormat: KRNParseResponseFormat = .none,
-                                                      formDataname: String,
-                                                      formDataFileName: String,
-                                                      mimeType: String,
-                                                      file: Data,
-                                                      completion: @escaping ResponseCompletion) -> URLSessionTask? {
-        
-        guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
-            completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.invalidUrl.rawValue))
-            return nil
-        }
-        
-        var urlRequest = generateUrlRequest(from: url, method: method, headerParams: headerParams)
-        let boundary = generateBoundaryString()
-        
-        urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        urlRequest.httpBody = createBody(with: nil,
-                                         filePathKey: formDataname,
-                                         fileName: formDataFileName,
-                                         mimeType: mimeType,
-                                         file: file,
-                                         boundary: boundary)
-        
-        return performDataTask(urlRequest: urlRequest, parseResponseFormat: parseFormat, completion: completion)
-    }
-    
-    private func createBody(with parameters: [String: String]?,
-                            filePathKey: String,
-                            fileName: String,
-                            mimeType: String,
-                            file: Data,
-                            boundary: String) -> Data {
-        var body = Data()
-        
-        if parameters != nil {
-            for (key, value) in parameters! {
-                body.append("--\(boundary)\r\n")
-                body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-                body.append("\(value)\r\n")
-            }
-        }
-        body.append("--\(boundary)\r\n")
-        body.append("Content-Disposition: form-data; name=\"\(filePathKey)\"; filename=\"\(fileName)\"\r\n")
-        body.append("Content-Type: \(mimeType)\r\n\r\n")
-        body.append(file)
-        body.append("\r\n")
-        body.append("--\(boundary)--\r\n")
-        return body
-    }
-    
-    private func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().uuidString)"
-    }
-}
-
-fileprivate extension Data {
-    mutating func append(_ string: String) {
-        if let data = string.data(using: .utf8) {
-            append(data)
-        }
-    }
-}
-
-protocol URLQueryParameterStringConvertible {
-    var queryParameters: String {get}
-}
-
-extension Dictionary: URLQueryParameterStringConvertible {
-    var queryParameters: String {
-        var parts: [String] = []
-        for (key, value) in self {
-            let part = String(format: "%@=%@",
-                              String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
-                              String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
-            parts.append(part as String)
-        }
-        return parts.joined(separator: "&")
     }
 }

@@ -2,7 +2,7 @@
 //  JSONConvertible.swift
 //  KRNRequestManagerExample
 //
-//  Created by Julian Ivanov on 23/03/2019.
+//  Created by Julian Drapaylo on 23/03/2019.
 //  Copyright © 2019 Julian Drapaylo. All rights reserved.
 //
 
