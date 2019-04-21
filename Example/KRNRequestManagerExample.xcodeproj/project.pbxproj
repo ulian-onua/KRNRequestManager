@@ -23,10 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6FA03C08226C769D00CF63F4 /* EncodingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodingType.swift; sourceTree = "<group>"; };
-		6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryParameterStringConvertible.swift; sourceTree = "<group>"; };
-		6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
-		6FA03C0E226C777800CF63F4 /* KRNRequestManager+MultipartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KRNRequestManager+MultipartData.swift"; sourceTree = "<group>"; };
+		6FA03C08226C769D00CF63F4 /* EncodingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EncodingType.swift; path = ../../Source/EncodingType.swift; sourceTree = "<group>"; };
+		6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLQueryParameterStringConvertible.swift; path = ../../Source/URLQueryParameterStringConvertible.swift; sourceTree = "<group>"; };
+		6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data+Extensions.swift"; path = "../../Source/Data+Extensions.swift"; sourceTree = "<group>"; };
+		6FA03C0E226C777800CF63F4 /* KRNRequestManager+MultipartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "KRNRequestManager+MultipartData.swift"; path = "../../Source/KRNRequestManager+MultipartData.swift"; sourceTree = "<group>"; };
 		B9060C642104C4B800C20BC7 /* KRNRequestManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KRNRequestManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9060C672104C4B800C20BC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B9060C692104C4B800C20BC7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
