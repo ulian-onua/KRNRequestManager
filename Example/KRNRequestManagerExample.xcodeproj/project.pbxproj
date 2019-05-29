@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F3F937D229EE0D700080FBF /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F937C229EE0D700080FBF /* Response.swift */; };
+		6F3F9385229EE1A700080FBF /* KRNRequestManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F9384229EE1A700080FBF /* KRNRequestManagerTests.swift */; };
+		6F3F938C229EE1C700080FBF /* KRNRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C792104C4F000C20BC7 /* KRNRequestManager.swift */; };
+		6F3F938D229EE1C700080FBF /* KRNResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C7D2104C61600C20BC7 /* KRNResponseParser.swift */; };
+		6F3F938E229EE1C700080FBF /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9060C7A2104C4F000C20BC7 /* NetworkError.swift */; };
+		6F3F938F229EE1C700080FBF /* JSONConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97AB8F12246B1F500E0887D /* JSONConvertible.swift */; };
+		6F3F9390229EE1C700080FBF /* EncodingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C08226C769D00CF63F4 /* EncodingType.swift */; };
+		6F3F9391229EE1C700080FBF /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */; };
+		6F3F9392229EE1C700080FBF /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */; };
+		6F3F9393229EE1C700080FBF /* KRNRequestManager+MultipartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C0E226C777800CF63F4 /* KRNRequestManager+MultipartData.swift */; };
+		6F3F9394229EE1C700080FBF /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F937C229EE0D700080FBF /* Response.swift */; };
 		6FA03C09226C769D00CF63F4 /* EncodingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C08226C769D00CF63F4 /* EncodingType.swift */; };
 		6FA03C0B226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */; };
 		6FA03C0D226C772F00CF63F4 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */; };
@@ -22,7 +33,21 @@
 		B97AB8F22246B1F500E0887D /* JSONConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97AB8F12246B1F500E0887D /* JSONConvertible.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6F3F9387229EE1A700080FBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B9060C5C2104C4B800C20BC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B9060C632104C4B800C20BC7;
+			remoteInfo = KRNRequestManagerExample;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		6F3F937C229EE0D700080FBF /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		6F3F9382229EE1A600080FBF /* KRNRequestManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KRNRequestManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F3F9384229EE1A700080FBF /* KRNRequestManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KRNRequestManagerTests.swift; sourceTree = "<group>"; };
+		6F3F9386229EE1A700080FBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FA03C08226C769D00CF63F4 /* EncodingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EncodingType.swift; path = ../../Source/EncodingType.swift; sourceTree = "<group>"; };
 		6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLQueryParameterStringConvertible.swift; path = ../../Source/URLQueryParameterStringConvertible.swift; sourceTree = "<group>"; };
 		6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data+Extensions.swift"; path = "../../Source/Data+Extensions.swift"; sourceTree = "<group>"; };
@@ -41,6 +66,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6F3F937F229EE1A600080FBF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9060C612104C4B800C20BC7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,10 +83,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F3F9383229EE1A600080FBF /* KRNRequestManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				6F3F9384229EE1A700080FBF /* KRNRequestManagerTests.swift */,
+				6F3F9386229EE1A700080FBF /* Info.plist */,
+			);
+			path = KRNRequestManagerTests;
+			sourceTree = "<group>";
+		};
 		B9060C5B2104C4B800C20BC7 = {
 			isa = PBXGroup;
 			children = (
 				B9060C662104C4B800C20BC7 /* KRNRequestManagerExample */,
+				6F3F9383229EE1A600080FBF /* KRNRequestManagerTests */,
 				B9060C652104C4B800C20BC7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				B9060C642104C4B800C20BC7 /* KRNRequestManagerExample.app */,
+				6F3F9382229EE1A600080FBF /* KRNRequestManagerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +135,7 @@
 				6FA03C0A226C76E700CF63F4 /* URLQueryParameterStringConvertible.swift */,
 				6FA03C0C226C772F00CF63F4 /* Data+Extensions.swift */,
 				6FA03C0E226C777800CF63F4 /* KRNRequestManager+MultipartData.swift */,
+				6F3F937C229EE0D700080FBF /* Response.swift */,
 			);
 			name = KRNRequestManager;
 			sourceTree = "<group>";
@@ -99,6 +143,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6F3F9381229EE1A600080FBF /* KRNRequestManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F3F9389229EE1A700080FBF /* Build configuration list for PBXNativeTarget "KRNRequestManagerTests" */;
+			buildPhases = (
+				6F3F937E229EE1A600080FBF /* Sources */,
+				6F3F937F229EE1A600080FBF /* Frameworks */,
+				6F3F9380229EE1A600080FBF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6F3F9388229EE1A700080FBF /* PBXTargetDependency */,
+			);
+			name = KRNRequestManagerTests;
+			productName = KRNRequestManagerTests;
+			productReference = 6F3F9382229EE1A600080FBF /* KRNRequestManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B9060C632104C4B800C20BC7 /* KRNRequestManagerExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9060C762104C4B900C20BC7 /* Build configuration list for PBXNativeTarget "KRNRequestManagerExample" */;
@@ -122,10 +184,14 @@
 		B9060C5C2104C4B800C20BC7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Julian Drapaylo";
 				TargetAttributes = {
+					6F3F9381229EE1A600080FBF = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = B9060C632104C4B800C20BC7;
+					};
 					B9060C632104C4B800C20BC7 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1010;
@@ -146,11 +212,19 @@
 			projectRoot = "";
 			targets = (
 				B9060C632104C4B800C20BC7 /* KRNRequestManagerExample */,
+				6F3F9381229EE1A600080FBF /* KRNRequestManagerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6F3F9380229EE1A600080FBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9060C622104C4B800C20BC7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,6 +238,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6F3F937E229EE1A600080FBF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3F938C229EE1C700080FBF /* KRNRequestManager.swift in Sources */,
+				6F3F938D229EE1C700080FBF /* KRNResponseParser.swift in Sources */,
+				6F3F938E229EE1C700080FBF /* NetworkError.swift in Sources */,
+				6F3F938F229EE1C700080FBF /* JSONConvertible.swift in Sources */,
+				6F3F9390229EE1C700080FBF /* EncodingType.swift in Sources */,
+				6F3F9391229EE1C700080FBF /* URLQueryParameterStringConvertible.swift in Sources */,
+				6F3F9392229EE1C700080FBF /* Data+Extensions.swift in Sources */,
+				6F3F9393229EE1C700080FBF /* KRNRequestManager+MultipartData.swift in Sources */,
+				6F3F9394229EE1C700080FBF /* Response.swift in Sources */,
+				6F3F9385229EE1A700080FBF /* KRNRequestManagerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9060C602104C4B800C20BC7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -175,6 +266,7 @@
 				B9060C7C2104C4F000C20BC7 /* NetworkError.swift in Sources */,
 				B9060C6A2104C4B800C20BC7 /* ViewController.swift in Sources */,
 				6FA03C0F226C777800CF63F4 /* KRNRequestManager+MultipartData.swift in Sources */,
+				6F3F937D229EE0D700080FBF /* Response.swift in Sources */,
 				B9060C7E2104C61600C20BC7 /* KRNResponseParser.swift in Sources */,
 				6FA03C09226C769D00CF63F4 /* EncodingType.swift in Sources */,
 				B9060C682104C4B800C20BC7 /* AppDelegate.swift in Sources */,
@@ -182,6 +274,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6F3F9388229EE1A700080FBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B9060C632104C4B800C20BC7 /* KRNRequestManagerExample */;
+			targetProxy = 6F3F9387229EE1A700080FBF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B9060C6B2104C4B800C20BC7 /* Main.storyboard */ = {
@@ -203,6 +303,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6F3F938A229EE1A700080FBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E8TPSF9L49;
+				INFOPLIST_FILE = KRNRequestManagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = test.KRNRequestManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KRNRequestManagerExample.app/KRNRequestManagerExample";
+			};
+			name = Debug;
+		};
+		6F3F938B229EE1A700080FBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E8TPSF9L49;
+				INFOPLIST_FILE = KRNRequestManagerTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = test.KRNRequestManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KRNRequestManagerExample.app/KRNRequestManagerExample";
+			};
+			name = Release;
+		};
 		B9060C742104C4B900C20BC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -356,6 +501,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6F3F9389229EE1A700080FBF /* Build configuration list for PBXNativeTarget "KRNRequestManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F3F938A229EE1A700080FBF /* Debug */,
+				6F3F938B229EE1A700080FBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B9060C5F2104C4B800C20BC7 /* Build configuration list for PBXProject "KRNRequestManagerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

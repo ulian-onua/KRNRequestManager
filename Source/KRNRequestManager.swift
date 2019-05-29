@@ -27,7 +27,7 @@ public enum KRNReqErrorString: String {
     case errorParsingAsString = "Error response format. Not string."
 }
 
-public typealias ResponseCompletion = (Any?, NetworkError?) -> Void
+public typealias ResponseCompletion = (Response?, NetworkError?) -> Void
 
 open class KRNRequestManager {
     public let urlSession: URLSession
@@ -68,7 +68,7 @@ open class KRNRequestManager {
                                              shortURL: String,
                                              params: JSONConvertible?,
                                              headerParams: [String: String]?,
-                                             parseFormat: KRNParseResponseFormat = .none,
+                                             parseFormat: ParseResponseFormat = .none,
                                              completion: @escaping ResponseCompletion) -> URLSessionTask? {
        
         guard let url = URL(string: baseUrl + shortURL) else {
@@ -113,7 +113,7 @@ open class KRNRequestManager {
                                                   shortURL: String,
                                                   urlParams: [String: String]?,
                                                   headerParams: [String: String]?,
-                                                  parseFormat: KRNParseResponseFormat = .none,
+                                                  parseFormat: ParseResponseFormat = .none,
                                                   completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
@@ -141,7 +141,7 @@ open class KRNRequestManager {
                                                      urlParams: [String: String]?,
                                                      params: JSONConvertible?,
                                                      headerParams: [String: String]?,
-                                                     parseFormat: KRNParseResponseFormat = .none,
+                                                     parseFormat: ParseResponseFormat = .none,
                                                      completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
@@ -173,7 +173,7 @@ open class KRNRequestManager {
                                                       urlParams: [String: String]?,
                                                       formUrlEncodedParams: [String: String]?,
                                                       headerParams: [String: String]?,
-                                                      parseFormat: KRNParseResponseFormat = .none,
+                                                      parseFormat: ParseResponseFormat = .none,
                                                       completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         guard let url = generateUrl(from: baseUrl + shortURL, urlParams: urlParams) else {
@@ -198,7 +198,7 @@ open class KRNRequestManager {
                                          urlParams: [String: String]? = nil,
                                          jsonParams: JSONConvertible? = nil,
                                          formUrlEncodedParams: [String: String]? = nil,
-                                         parseFormat: KRNParseResponseFormat = .none,
+                                         parseFormat: ParseResponseFormat = .none,
                                          completion: @escaping ResponseCompletion) -> URLSessionTask? {
         
         switch encodingType {
@@ -276,13 +276,19 @@ open class KRNRequestManager {
     // MARK: - Private
     
     @discardableResult func performDataTask(urlRequest: URLRequest,
-                                            parseResponseFormat: KRNParseResponseFormat,
+                                            parseResponseFormat: ParseResponseFormat,
                                             completion: @escaping ResponseCompletion) -> URLSessionTask {
         
         let task =
             urlSession.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let `self` = self else {return}
             if let error = error {
+                if (error as NSError).domain == NSURLErrorDomain &&
+                    (error as NSError).code == NSURLErrorCancelled {
+                    completion(nil, NetworkError.cancelledTask())
+                    return
+                }
+                
                 completion(nil, NetworkError(originalErrorMessage: error.localizedDescription))
                 return
             }
@@ -293,10 +299,11 @@ open class KRNRequestManager {
                                         rawData: data))
                 return
             }
-            
-            if response.statusCode >= 200 && response.statusCode < 300 {
+            let statusCode = response.statusCode
+            if statusCode >= 200 && statusCode < 300 {
                 if let data = data {
                     self.responseParser.parseDataResponse(response: data,
+                                                          statusCode: statusCode,
                                                           parseResponseFormat: parseResponseFormat,
                                                           completion: completion)
                 } else {
@@ -304,7 +311,7 @@ open class KRNRequestManager {
                 }
             }
             else {
-                completion(data, NetworkError(statusCode: response.statusCode, rawData: data))
+                completion(nil, NetworkError(statusCode: statusCode, rawData: data))
             }
             
             }

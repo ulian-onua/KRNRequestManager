@@ -16,19 +16,30 @@ public class NetworkError: Error {
     public let originalErrorMessage: String
     public let rawData: Data?
     
- 
+    public let cancelledTaskError: Bool // occurs in case if task.cancel() method called
+    
     // MARK: - Initializers
     
-    public init(statusCode: Int? = nil, originalErrorMessage: String, rawData: Data? = nil) {
+    public init(statusCode: Int? = nil,
+                originalErrorMessage: String,
+                rawData: Data? = nil,
+                cancelledTaskError: Bool = false) {
         self.statusCode = statusCode
         self.originalErrorMessage = originalErrorMessage
         self.rawData = rawData
+        self.cancelledTaskError = cancelledTaskError
     }
     
     public init(statusCode: Int, rawData: Data?) {
         self.statusCode = statusCode
         self.originalErrorMessage = ""
         self.rawData = rawData
+        self.cancelledTaskError = false
+    }
+    
+    static func cancelledTask() -> NetworkError {
+        return NetworkError(originalErrorMessage: "The task has been cancelled",
+                            cancelledTaskError: true)
     }
     
     // MARK: - Localized description support

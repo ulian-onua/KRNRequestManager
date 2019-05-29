@@ -12,7 +12,7 @@ extension KRNRequestManager {
                                                       shortURL: String,
                                                       urlParams: [String: String]? = nil,
                                                       headerParams: [String: String]?,
-                                                      parseFormat: KRNParseResponseFormat = .none,
+                                                      parseFormat: ParseResponseFormat = .none,
                                                       formDataname: String,
                                                       formDataFileName: String,
                                                       mimeType: String,

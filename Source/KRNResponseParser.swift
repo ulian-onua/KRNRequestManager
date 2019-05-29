@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum KRNParseResponseFormat  {
+public enum ParseResponseFormat  {
     case none // not parse
     case json // parse as json
     case string // parse as string
@@ -34,8 +34,11 @@ open class KRNResponseParser {
     }
     
     open func parseDataResponse(response: Data,
-                                parseResponseFormat: KRNParseResponseFormat,
+                                statusCode: Int,
+                                parseResponseFormat: ParseResponseFormat,
                                 completion: @escaping ResponseCompletion) {
+        
+        let parseObject: Any
         
         switch parseResponseFormat {
         case .json:
@@ -44,17 +47,23 @@ open class KRNResponseParser {
                                              rawData: response))
                 return
             }
-            completion(jsonObject, nil)
+            parseObject = jsonObject
         case .string:
             guard let stringObject = parseAsString(response: response) else {
                 completion(nil, NetworkError(originalErrorMessage: KRNReqErrorString.errorParsingAsString.rawValue,
                                              rawData: response))
                 return
             }
-            completion(stringObject, nil)
+            parseObject = stringObject
         default: // on none just return
-            completion (response, nil)
+            parseObject = response
         }
+        
+        let resp = Response(statusCode: statusCode,
+                            body: parseObject,
+                            parseFormat: .none)
+        
+        completion (resp, nil)
     }
     
     
