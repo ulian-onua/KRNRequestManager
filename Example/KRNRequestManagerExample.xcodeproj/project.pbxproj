@@ -44,7 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6F3F937C229EE0D700080FBF /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		6F3F937C229EE0D700080FBF /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Response.swift; path = ../../Source/Response.swift; sourceTree = "<group>"; };
 		6F3F9382229EE1A600080FBF /* KRNRequestManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KRNRequestManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F3F9384229EE1A700080FBF /* KRNRequestManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KRNRequestManagerTests.swift; sourceTree = "<group>"; };
 		6F3F9386229EE1A700080FBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
